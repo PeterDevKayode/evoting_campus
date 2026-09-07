@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Voter login — CampusVote{% endblock %}
+{% block content %}
+
+<div class="auth-wrap">
+  <div class="auth-card">
+    <span class="badge-tag">Voter access</span>
+    <h1>Log in to vote</h1>
+    <p class="sub">Use the Voter ID and password given to you by your electoral committee.</p>
+
+    <form method="POST" action="{{ url_for('voter_login') }}">
+      <div class="field">
+        <label for="voter_id">Voter ID (e.g. matric number)</label>
+        <input type="text" id="voter_id" name="voter_id" required autofocus autocomplete="username">
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required autocomplete="current-password">
+        <div class="hint">This was issued to you once by the admin — it doesn't expire until they reset it.</div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Continue to ballot</button>
+    </form>
+
+    <div class="form-foot">Not registered yet? Contact your department's electoral admin.</div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Admin login — CampusVote{% endblock %}
+{% block content %}
+
+<div class="auth-wrap">
+  <div class="auth-card">
+    <span class="badge-tag">Electoral admin</span>
+    <h1>Admin sign in</h1>
+    <p class="sub">Manage departments, elections, candidates and voters.</p>
+
+    <form method="POST" action="{{ url_for('admin_login') }}">
+      <div class="field">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required autofocus autocomplete="username">
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+    </form>
+
+    <div class="form-foot">Default seed account: <strong>admin</strong> / <strong>admin123</strong> — change it in the database for real use.</div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Ballot received — CampusVote{% endblock %}
+
+{% block topbar_links %}
+  <a class="btn btn-outline btn-sm" href="{{ url_for('voter_logout') }}">Log out</a>
+{% endblock %}
+
+{% block content %}
+<div class="receipt-wrap">
+  <div class="receipt">
+    <div class="stamp">✓</div>
+    {% if already %}
+      <h1>You've already voted</h1>
+      <p>Our records show a ballot was already cast for the {{ department["name"] }} election with your Voter ID. Only one vote per person is allowed.</p>
+    {% else %}
+      <h1>Your ballot has been recorded</h1>
+      <p>Thank you for voting in the {{ department["name"] }} department election. Your choice has been stored anonymously — it is not linked back to your name or Voter ID.</p>
+    {% endif %}
+    <a class="btn btn-primary" style="margin-top:18px;" href="{{ url_for('voter_logout') }}">Log out</a>
+  </div>
+</div>
+{% endblock %}

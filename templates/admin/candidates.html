@@ -1,0 +1,47 @@
+{% extends "admin/shell.html" %}
+{% set active = "dashboard" %}
+{% block title %}Candidates — CampusVote{% endblock %}
+
+{% block admin_content %}
+
+<div class="admin-header">
+  <div>
+    <h1>{{ election["title"] }}</h1>
+    <p>{{ election["department_name"] }} department · <span class="pill pill-{{ election['status'] }}">{{ election["status"] }}</span></p>
+  </div>
+  <a class="btn btn-outline" href="{{ url_for('admin_dashboard') }}">&larr; Back to dashboard</a>
+</div>
+
+<div class="card narrow">
+  <h2>Add a candidate</h2>
+  <div class="card-sub">Add every candidate contesting in this department's election.</div>
+  <form method="POST" action="{{ url_for('admin_candidates', election_id=election['id']) }}">
+    <div class="field">
+      <label for="full_name">Candidate name</label>
+      <input type="text" id="full_name" name="full_name" required>
+    </div>
+    <div class="field">
+      <label for="slogan">Slogan (optional)</label>
+      <input type="text" id="slogan" name="slogan" placeholder="e.g. Progress for all students">
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">Add candidate</button>
+  </form>
+</div>
+
+<div class="card">
+  <h2>Candidates in this election</h2>
+  {% if candidates|length == 0 %}
+    <p style="color:var(--ink-soft)">No candidates added yet.</p>
+  {% else %}
+  <table class="data-table">
+    <thead><tr><th>Name</th><th>Slogan</th></tr></thead>
+    <tbody>
+      {% for c in candidates %}
+      <tr><td>{{ c["full_name"] }}</td><td>{{ c["slogan"] or "—" }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}CampusVote{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="{{ url_for('home') }}">
+        <span class="brand-mark">CV</span> CampusVote
+      </a>
+      <div class="topbar-links">
+        {% block topbar_links %}
+        <a class="btn btn-outline btn-sm" href="{{ url_for('voter_login') }}">Voter login</a>
+        <a class="btn btn-primary btn-sm" href="{{ url_for('admin_login') }}">Admin login</a>
+        {% endblock %}
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container" style="padding-top:22px;">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+    {% block content %}{% endblock %}
+  </main>
+
+  <div class="footer-note">CampusVote — a departmental e-voting assignment build. Every ballot is anonymous.</div>
+</body>
+</html>

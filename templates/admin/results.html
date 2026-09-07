@@ -1,0 +1,35 @@
+{% extends "admin/shell.html" %}
+{% set active = "dashboard" %}
+{% block title %}Results — CampusVote{% endblock %}
+
+{% block admin_content %}
+
+<div class="admin-header">
+  <div>
+    <h1>{{ election["title"] }}</h1>
+    <p>{{ election["department_name"] }} department · <span class="pill pill-{{ election['status'] }}">{{ election["status"] }}</span> · {{ total_votes if results|length else 0 }} ballot(s) cast</p>
+  </div>
+  <a class="btn btn-outline" href="{{ url_for('admin_dashboard') }}">&larr; Back to dashboard</a>
+</div>
+
+<div class="card">
+  <h2>Live tally</h2>
+  <div class="card-sub">Updates every time you reload this page.</div>
+
+  {% if results|length == 0 %}
+    <p style="color:var(--ink-soft)">No candidates in this election yet.</p>
+  {% else %}
+    {% for r in results %}
+      {% set pct = (r["vote_count"] / total_votes * 100) | round(1) %}
+      <div class="bar-row {{ 'leader' if loop.first and r['vote_count'] > 0 }}">
+        <div class="bar-label">
+          <span>{{ r["full_name"] }}{% if r["slogan"] %} <span style="color:var(--ink-soft)">— {{ r["slogan"] }}</span>{% endif %}</span>
+          <span>{{ r["vote_count"] }} vote(s) · {{ pct }}%</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width: {{ pct }}%;"></div></div>
+      </div>
+    {% endfor %}
+  {% endif %}
+</div>
+
+{% endblock %}

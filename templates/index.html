@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}CampusVote — Departmental Elections{% endblock %}
+{% block content %}
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="eyebrow-plain">Departmental campus elections</div>
+      <h1>One department, one ballot, one vote each.</h1>
+      <p class="lede">
+        CampusVote runs every department's election side by side, keeps each
+        ballot anonymous, and only lets registered voters — verified by a
+        password issued by the electoral admin — cast a single vote.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="{{ url_for('voter_login') }}">Vote with your Voter ID</a>
+        <a class="btn btn-outline" href="{{ url_for('admin_login') }}">Admin control panel</a>
+      </div>
+    </div>
+    <div class="seal">
+      <div class="seal-inner">
+        <span class="num">1 : 1</span>
+        <span class="cap">one voter, one ballot, no exceptions</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="feature-strip">
+  <div class="container">
+    <h2>How it stays fair</h2>
+    <div class="feature-grid">
+      <div class="feature">
+        <h3>Runs many elections at once</h3>
+        <p>Every department can hold its election on its own schedule, in parallel, without interfering with the others.</p>
+      </div>
+      <div class="feature">
+        <h3>Anonymous by design</h3>
+        <p>A ballot is stored on its own, with nothing linking it back to who cast it — not even to the admin.</p>
+      </div>
+      <div class="feature">
+        <h3>No impersonation</h3>
+        <p>Only people the admin has pre-registered can log in, using a Voter ID and a password only they receive.</p>
+      </div>
+      <div class="feature">
+        <h3>One vote per person</h3>
+        <p>The moment a ballot is cast, that Voter ID is locked out of voting again in the same election.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container access-grid">
+  <div class="access-card">
+    <h3>I'm here to vote</h3>
+    <p>Log in with the Voter ID and password your electoral committee gave you.</p>
+    <a class="btn btn-primary btn-block" href="{{ url_for('voter_login') }}">Go to voter login</a>
+  </div>
+  <div class="access-card">
+    <h3>I'm the electoral admin</h3>
+    <p>Register voters, generate their passwords, set up elections and candidates, and watch results live.</p>
+    <a class="btn btn-outline btn-block" href="{{ url_for('admin_login') }}">Go to admin panel</a>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "admin/shell.html" %}
+{% set active = "voters" %}
+{% block title %}Voters — CampusVote{% endblock %}
+
+{% block admin_content %}
+
+<div class="admin-header">
+  <div>
+    <h1>Eligible voters</h1>
+    <p>Only people registered here can log in and vote — this is what stops impersonation.</p>
+  </div>
+</div>
+
+{% if new_credentials %}
+<div class="credential-box">
+  <strong>{{ new_credentials.full_name }}</strong> ({{ new_credentials.voter_id }}) was registered.<br>
+  Give them this one-time password: <span class="pw">{{ new_credentials.password }}</span>
+</div>
+{% endif %}
+
+<div class="card narrow">
+  {% if departments|length == 0 %}
+    <p style="color:var(--ink-soft)">Add a department before registering voters. <a href="{{ url_for('admin_departments') }}">Add a department</a>.</p>
+  {% else %}
+  <h2>Register a voter</h2>
+  <div class="card-sub">A password is generated automatically — copy it and hand it to the voter.</div>
+  <form method="POST" action="{{ url_for('admin_voters') }}">
+    <div class="field">
+      <label for="voter_id">Voter ID (matric number)</label>
+      <input type="text" id="voter_id" name="voter_id" required>
+    </div>
+    <div class="field">
+      <label for="full_name">Full name</label>
+      <input type="text" id="full_name" name="full_name" required>
+    </div>
+    <div class="field">
+      <label for="department_id">Department</label>
+      <select id="department_id" name="department_id" required>
+        <option value="" disabled selected>Select a department</option>
+        {% for d in departments %}
+          <option value="{{ d['id'] }}">{{ d["name"] }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">Register voter &amp; generate password</button>
+  </form>
+  {% endif %}
+</div>
+
+<div class="card">
+  <h2>All registered voters ({{ voters|length }})</h2>
+  {% if voters|length == 0 %}
+    <p style="color:var(--ink-soft)">No voters registered yet.</p>
+  {% else %}
+  <table class="data-table">
+    <thead>
+      <tr><th>Voter ID</th><th>Name</th><th>Department</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+      {% for v in voters %}
+      <tr>
+        <td>{{ v["voter_id"] }}</td>
+        <td>{{ v["full_name"] }}</td>
+        <td>{{ v["department_name"] }}</td>
+        <td>
+          <div class="actions-row">
+            <a class="btn btn-outline btn-sm" href="{{ url_for('admin_reset_password', voter_id=v['id']) }}">Reset password</a>
+            <a class="btn btn-danger-outline" href="{{ url_for('admin_delete_voter', voter_id=v['id']) }}" onclick="return confirm('Remove this voter?');">Remove</a>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</div>
+
+{% endblock %}

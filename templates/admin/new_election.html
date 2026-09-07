@@ -1,0 +1,37 @@
+{% extends "admin/shell.html" %}
+{% set active = "new_election" %}
+{% block title %}New election — CampusVote{% endblock %}
+
+{% block admin_content %}
+
+<div class="admin-header">
+  <div>
+    <h1>Create a new election</h1>
+    <p>Each election belongs to exactly one department, so voting stays organised department by department.</p>
+  </div>
+</div>
+
+<div class="card narrow">
+  {% if departments|length == 0 %}
+    <p style="color:var(--ink-soft)">You need at least one department before creating an election. <a href="{{ url_for('admin_departments') }}">Add a department first</a>.</p>
+  {% else %}
+  <form method="POST" action="{{ url_for('admin_new_election') }}">
+    <div class="field">
+      <label for="title">Election title</label>
+      <input type="text" id="title" name="title" placeholder="e.g. 2026 Departmental President Election" required>
+    </div>
+    <div class="field">
+      <label for="department_id">Department</label>
+      <select id="department_id" name="department_id" required>
+        <option value="" disabled selected>Select a department</option>
+        {% for d in departments %}
+          <option value="{{ d['id'] }}">{{ d["name"] }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">Create election</button>
+  </form>
+  {% endif %}
+</div>
+
+{% endblock %}

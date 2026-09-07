@@ -1,0 +1,66 @@
+{% extends "admin/shell.html" %}
+{% set active = "dashboard" %}
+{% block title %}Admin dashboard — CampusVote{% endblock %}
+
+{% block admin_content %}
+
+<div class="admin-header">
+  <div>
+    <h1>Election control room</h1>
+    <p>Every department's election, all in one place — several can run at the same time.</p>
+  </div>
+  <a class="btn btn-gold" href="{{ url_for('admin_new_election') }}">+ New election</a>
+</div>
+
+<div class="stat-row">
+  <div class="stat-tile"><span class="num">{{ stats.departments }}</span><span class="lbl">Departments</span></div>
+  <div class="stat-tile"><span class="num">{{ stats.voters }}</span><span class="lbl">Registered voters</span></div>
+  <div class="stat-tile"><span class="num">{{ stats.elections_active }}</span><span class="lbl">Elections open now</span></div>
+  <div class="stat-tile"><span class="num">{{ stats.ballots_cast }}</span><span class="lbl">Ballots cast</span></div>
+</div>
+
+<div class="card">
+  <h2>All elections</h2>
+  <div class="card-sub">Open voting when a department is ready, and close it once voting ends.</div>
+
+  {% if elections|length == 0 %}
+    <p style="color:var(--ink-soft)">No elections yet. <a href="{{ url_for('admin_new_election') }}">Create the first one</a>.</p>
+  {% else %}
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Election</th>
+        <th>Department</th>
+        <th>Status</th>
+        <th>Candidates</th>
+        <th>Ballots cast</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for e in elections %}
+      <tr>
+        <td>{{ e["title"] }}</td>
+        <td>{{ e["department_name"] }}</td>
+        <td><span class="pill pill-{{ e['status'] }}">{{ e["status"] }}</span></td>
+        <td>{{ e["candidate_count"] }}</td>
+        <td>{{ e["votes_count"] }}</td>
+        <td>
+          <div class="actions-row">
+            <a class="btn btn-outline btn-sm" href="{{ url_for('admin_candidates', election_id=e['id']) }}">Candidates</a>
+            {% if e["status"] != "active" %}
+              <a class="btn btn-primary btn-sm" href="{{ url_for('admin_set_election_status', election_id=e['id'], new_status='active') }}">Open</a>
+            {% else %}
+              <a class="btn btn-danger-outline" href="{{ url_for('admin_set_election_status', election_id=e['id'], new_status='closed') }}">Close</a>
+            {% endif %}
+            <a class="btn btn-outline btn-sm" href="{{ url_for('admin_results', election_id=e['id']) }}">Results</a>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</div>
+
+{% endblock %}

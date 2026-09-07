@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Cast your vote — CampusVote{% endblock %}
+
+{% block topbar_links %}
+  <span>{{ voter["full_name"] }}</span>
+  <a class="btn btn-outline btn-sm" href="{{ url_for('voter_logout') }}">Log out</a>
+{% endblock %}
+
+{% block content %}
+<div class="ballot-wrap">
+
+  {% if election is none %}
+    <div class="empty-state">
+      <div class="glyph">—</div>
+      <h2>No open election right now</h2>
+      <p>There is no active election for the {{ department["name"] }} department at this moment. Check back once your electoral admin opens voting.</p>
+    </div>
+
+  {% else %}
+    <div class="ballot-head">
+      <span class="dept-tag">{{ department["name"] }} department</span>
+      <h1>{{ election["title"] }}</h1>
+      <p>Select one candidate below, then submit your ballot. You can only vote once.</p>
+    </div>
+
+    <form method="POST" action="{{ url_for('voter_vote') }}" id="ballot-form">
+      <div class="ballot-paper">
+        <div class="strip"></div>
+        <div class="ballot-body">
+          {% for c in candidates %}
+            <label class="candidate-option" for="cand-{{ c['id'] }}">
+              <input type="radio" id="cand-{{ c['id'] }}" name="candidate_id" value="{{ c['id'] }}" required>
+              <div>
+                <div class="candidate-name">{{ c["full_name"] }}</div>
+                {% if c["slogan"] %}<div class="candidate-slogan">{{ c["slogan"] }}</div>{% endif %}
+              </div>
+            </label>
+          {% endfor %}
+        </div>
+        <div class="ballot-actions">
+          <button type="submit" class="btn btn-primary btn-block">Submit my ballot</button>
+        </div>
+      </div>
+    </form>
+  {% endif %}
+
+</div>
+{% endblock %}
