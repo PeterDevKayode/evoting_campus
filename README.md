@@ -141,12 +141,14 @@ Vite and serves the generated `dist/` directory from Express.
   - `ADMIN_USERNAME`
   - `ADMIN_PASSWORD`
 
-4. Attach a persistent disk at `/var/data`. The SQLite database and session
-  records are stored there through `DATA_DIR`.
+4. The included no-cost blueprint uses `/tmp/campusvote-data`, which does not
+  persist across service restarts or redeploys. This is suitable for a demo,
+  but not for retaining real election data.
 
 The build command is `npm install && npm run build` and the start command is
 `npm start`. Render provides HTTPS and the `PORT` value automatically.
 
-Back up `campusvote.sqlite` from the persistent disk regularly. This remains
-an educational deployment: a real election requires independent security
-review, stronger identity controls, monitoring, and a formal recovery plan.
+For persistent data, use a paid persistent disk or move the database to a
+managed database service. This remains an educational deployment: a real
+election requires independent security review, stronger identity controls,
+monitoring, and a formal recovery plan.
