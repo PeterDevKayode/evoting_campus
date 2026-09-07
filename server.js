@@ -72,6 +72,9 @@ const recordLoginFailure = (req, role) => {
 
 if (!db.prepare('SELECT 1 FROM admin LIMIT 1').get()) db.prepare('INSERT INTO admin (username,password_hash) VALUES (?,?)').run(adminUsername, hash(adminPassword))
 if (!process.env.ADMIN_PASSWORD) console.warn('ADMIN_PASSWORD is not set; using the development default. Set it before public deployment.')
+const defaultDepartments = ['Computer science', 'Masscommunication', 'Library and Information']
+const addDepartment = db.prepare('INSERT OR IGNORE INTO departments(name) VALUES (?)')
+for (const department of defaultDepartments) addDepartment.run(department)
 
 app.get('/api/session', (req, res) => send(res, sessionUser(req) || { role: null }))
 app.post('/api/auth/:role/login', (req, res) => {
