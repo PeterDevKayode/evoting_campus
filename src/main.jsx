@@ -24,7 +24,7 @@ function App() {
             setUser(session.role ? session : null)
             if (session.role === 'admin') setScreen('admin')
             if (session.role === 'voter') setScreen('voter')
-        }).catch(() => {})
+        }).catch(() => { })
     }, [])
 
     const login = async (role, data) => {
@@ -849,7 +849,7 @@ function ResultsPanel({ elections, results, selectedElectionId, onSelect }) {
 
 function Stat({ icon, label, value }) {
     return (
-        <div className="stat-card">
+        <div className="stat">
             <span>{icon}</span>
             <strong>{value}</strong>
             <small>{label}</small>
